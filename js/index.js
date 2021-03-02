@@ -2,11 +2,11 @@
 
 // Создание и рендер разметки по массиву данных и предоставленному шаблону. - Add
 // Реализация делегирования на галерее ul.js-gallery и получение url большого изображения. - Add
-// Открытие модального окна по клику на элементе галереи.
-// Подмена значения атрибута src элемента img.lightbox__image.
-// Закрытие модального окна по клику на кнопку button[data-action="close-lightbox"].
-// Очистка значения атрибута src элемента img.lightbox__image. Это необходимо для того,
-//  чтобы при следующем открытии модального окна, пока грузится изображение, мы не видели предыдущее.
+// Открытие модального окна по клику на элементе галереи. -Add
+// Подмена значения атрибута src элемента img.lightbox__image. -Add
+// Закрытие модального окна по клику на кнопку button[data-action="close-lightbox"].-Add
+// Очистка значения атрибута src элемента img.lightbox__image. Это необходимо для того, -Add
+//  чтобы при следующем открытии модального окна, пока грузится изображение, мы не видели предыдущее. -Add
 
 // Разметка элемента галереи
 // Ссылка на оригинальное изображение должна храниться в data-атрибуте source на элементе img,
@@ -15,22 +15,18 @@
 // Дополнительно
 // Следующий функционал не обязателен при сдаче задания, но будет хорошей практикой по работе с событиями.
 
-// Закрытие модального окна по клику на div.lightbox__overlay.
-// Закрытие модального окна по нажатию клавиши ESC.
+// Закрытие модального окна по клику на div.lightbox__overlay. -Add
+// Закрытие модального окна по нажатию клавиши ESC. -Add
 // Пролистывание изображений галереи в открытом модальном окне клавишами "влево" и "вправо".
-import images from './gallery-items.js';
 
-// console.log(images);
+import images from './gallery-items.js';
 
 const imadgesListRef = document.querySelector('.js-gallery');
 const modalRef = document.querySelector('.js-lightbox');
+const modalOverlay = document.querySelector('.lightbox__overlay');
 const modalImgRef = document.querySelector('.lightbox__image');
-// const formRef = document.querySelector(".form");
-// const inputRef = document.querySelector(".todo");
-// const listRef = document.querySelector(".todo-list");
-// const filterRef = document.querySelector('.filter')
-
-// document.body.prepend(imadgesListRef);
+const closeModalBtn = document.querySelector('.lightbox__button');
+const imageGalleryItem = document.querySelector('.gallery__item');
 
 const imadgesMarkup = images.reduce(
   (acc, { preview, original, description }) => {
@@ -53,47 +49,57 @@ const imadgesMarkup = images.reduce(
   },
   '',
 );
-// console.log(imadgesMarkup);
+
 imadgesListRef.insertAdjacentHTML('afterbegin', imadgesMarkup);
 
-
-imadgesListRef.addEventListener('click', (event) => {
+imadgesListRef.addEventListener('click', event => {
   event.preventDefault();
-  console.dir(event.target.dataset.source);
-  console.dir(modalImgRef.src);
   if (event.target.localName === 'img') {
-    modalRef.classList = 'is-open';
-    modalImgRef.src = event.target.dataset.source
+    addImgModal();
   }
 });
 
+closeModalBtn.addEventListener('click', () => {
+  removeImgModal();
+});
+
+modalOverlay.addEventListener('click', event => {
+  if (event.target.localName === 'img') {
+    return;
+  }
+  removeImgModal();
+});
+
+window.addEventListener('keyup', event => {
+  if (event.key === 'Escape') {
+    removeImgModal();
+  }
+});
+
+function removeImgModal() {
+  modalRef.classList.remove('is-open');
+  modalImgRef.src = '';
+  modalImgRef.alt = '';
+}
+
+function addImgModal() {
+  modalRef.classList.add('is-open');
+  modalImgRef.src = event.target.dataset.source;
+  modalImgRef.alt = event.target.alt;
+}
 
 
+// console.log(imageGalleryItem);
+// window.addEventListener('keyup', event => {
+//   event.preventDefault();
+//   console.dir(event);
+//   console.dir(imageGalleryItem);
 
+//   if (event.key === 'Enter') {
 
-
-// gelleryList.addEventListener("click", handleImadgeClick);
-
-// function handleImadgeClick(event) {
-//   // event.preventDefault();
-  
-//   const target = event.target;
-//   // console.log("event target: ", target); // посмотрите что тут
-
-//   // Проверяем тип узла, если не ссылка выходим из функции
-//   if (target.nodeName !== "IMG") return;
-
-//   setActiveImg(target);
-// }
-
-// // function setActiveImg(nextActiveLink) {
-// //   const currentActiveLink = nav.querySelector("a.active");
-
-// //   if (currentActiveLink) {
-// //     currentActiveLink.classList.remove("active");
-// //   }
-
-// //   nextActiveLink.classList.add("active");
-// // }
-
-
+//     // addImgModal()
+//     modalRef.classList.add('is-open');
+//     modalImgRef.src = imageGalleryItem.href;
+//     // modalImgRef.alt = event.target.alt;
+//   }
+// });
