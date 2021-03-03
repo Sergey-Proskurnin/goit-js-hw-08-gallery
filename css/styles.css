@@ -24,7 +24,9 @@ body {
   background-color: #fff;
   color: #212121;
 }
-
+body.is-open {
+  overflow: hidden;
+}
 .gallery {
   display: grid;
   width: 1200px;
@@ -77,6 +79,8 @@ body {
   opacity: 0;
   pointer-events: none;
   transition: opacity var(--animation-duration) var(--timing-function);
+
+  overflow-y: scroll;
 }
 
 .lightbox.is-open {
