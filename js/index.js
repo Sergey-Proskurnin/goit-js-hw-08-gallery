@@ -21,6 +21,7 @@
 
 import images from './gallery-items.js';
 
+const bodyRef = document.querySelector('body')
 const imadgesListRef = document.querySelector('.js-gallery');
 const modalRef = document.querySelector('.js-lightbox');
 const modalOverlay = document.querySelector('.lightbox__overlay');
@@ -91,12 +92,14 @@ window.addEventListener('keyup', event => {
 });
 
 function removeImgModal() {
+  bodyRef.classList.remove('is-open')
   modalRef.classList.remove('is-open');
   modalImgRef.src = '';
   modalImgRef.alt = '';
 }
 
 function addImgModal() {
+  bodyRef.classList.add('is-open')
   modalRef.classList.add('is-open');
   modalImgRef.src = event.target.dataset.source;
   modalImgRef.alt = event.target.alt;
@@ -131,3 +134,4 @@ window.addEventListener('keyup', event => {
       ];
   }
 });
+
