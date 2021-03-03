@@ -17,7 +17,7 @@
 
 // Закрытие модального окна по клику на div.lightbox__overlay. -Add
 // Закрытие модального окна по нажатию клавиши ESC. -Add
-// Пролистывание изображений галереи в открытом модальном окне клавишами "влево" и "вправо".
+// Пролистывание изображений галереи в открытом модальном окне клавишами "влево" и "вправо" -Add
 
 import images from './gallery-items.js';
 
@@ -26,7 +26,19 @@ const modalRef = document.querySelector('.js-lightbox');
 const modalOverlay = document.querySelector('.lightbox__overlay');
 const modalImgRef = document.querySelector('.lightbox__image');
 const closeModalBtn = document.querySelector('.lightbox__button');
-const imageGalleryItem = document.querySelector('.gallery__item');
+
+let currentImg = 0;
+let currentAlt = 0;
+
+const imgArray = images.reduce((acc, { original }) => {
+  acc.push(original);
+  return acc;
+}, []);
+
+const altArray = images.reduce((acc, { description }) => {
+  acc.push(description);
+  return acc;
+}, []);
 
 const imadgesMarkup = images.reduce(
   (acc, { preview, original, description }) => {
@@ -56,6 +68,8 @@ imadgesListRef.addEventListener('click', event => {
   event.preventDefault();
   if (event.target.localName === 'img') {
     addImgModal();
+    currentImg = imgArray.indexOf(modalImgRef.src);
+    currentAlt = altArray.indexOf(modalImgRef.alt);
   }
 });
 
@@ -88,18 +102,32 @@ function addImgModal() {
   modalImgRef.alt = event.target.alt;
 }
 
+window.addEventListener('keyup', event => {
+  if (event.key === 'ArrowRight') {
+    modalImgRef.src =
+      imgArray[
+        currentImg === imgArray.length ? (currentImg = 0) : currentImg++
+      ];
+    modalImgRef.alt =
+      altArray[
+        currentAlt === altArray.length ? (currentAlt = 0) : currentAlt++
+      ];
+  }
+});
 
-// console.log(imageGalleryItem);
-// window.addEventListener('keyup', event => {
-//   event.preventDefault();
-//   console.dir(event);
-//   console.dir(imageGalleryItem);
-
-//   if (event.key === 'Enter') {
-
-//     // addImgModal()
-//     modalRef.classList.add('is-open');
-//     modalImgRef.src = imageGalleryItem.href;
-//     // modalImgRef.alt = event.target.alt;
-//   }
-// });
+window.addEventListener('keyup', event => {
+  if (event.key === 'ArrowLeft') {
+    modalImgRef.src =
+      imgArray[
+        currentImg === -1
+          ? (currentImg = currentImg + imgArray.length)
+          : currentImg--
+      ];
+    modalImgRef.alt =
+      altArray[
+        currentAlt === -1
+          ? (currentAlt = currentAlt + altArray.length)
+          : currentAlt--
+      ];
+  }
+});
