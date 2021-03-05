@@ -80,8 +80,7 @@ body.is-open {
   pointer-events: none;
   transition: opacity var(--animation-duration) var(--timing-function);
 
-  overflow-y: scroll;
-}
+  }
 
 .lightbox.is-open {
   opacity: 1;
