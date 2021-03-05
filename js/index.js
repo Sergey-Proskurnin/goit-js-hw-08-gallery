@@ -21,7 +21,7 @@
 
 import images from './gallery-items.js';
 
-const bodyRef = document.querySelector('body')
+const bodyRef = document.querySelector('body');
 const imadgesListRef = document.querySelector('.js-gallery');
 const modalRef = document.querySelector('.js-lightbox');
 const modalOverlay = document.querySelector('.lightbox__overlay');
@@ -49,6 +49,8 @@ const imadgesMarkup = images.reduce(
   <a
     class="gallery__link"
     href="${original}"
+    target="_blank" 
+    rel="noreferrer noopener"
   >
     <img
       class="gallery__image"
@@ -92,14 +94,14 @@ window.addEventListener('keyup', event => {
 });
 
 function removeImgModal() {
-  bodyRef.classList.remove('is-open')
+  bodyRef.classList.remove('is-open');
   modalRef.classList.remove('is-open');
   modalImgRef.src = '';
   modalImgRef.alt = '';
 }
 
 function addImgModal() {
-  bodyRef.classList.add('is-open')
+  bodyRef.classList.add('is-open');
   modalRef.classList.add('is-open');
   modalImgRef.src = event.target.dataset.source;
   modalImgRef.alt = event.target.alt;
@@ -107,31 +109,18 @@ function addImgModal() {
 
 window.addEventListener('keyup', event => {
   if (event.key === 'ArrowRight') {
-    modalImgRef.src =
-      imgArray[
-        currentImg === imgArray.length ? (currentImg = 0) : currentImg++
-      ];
-    modalImgRef.alt =
-      altArray[
-        currentAlt === altArray.length ? (currentAlt = 0) : currentAlt++
-      ];
+    currentImg === imgArray.length - 1 ? (currentImg = 0) : currentImg++;
+    modalImgRef.src = imgArray[currentImg];
+    currentAlt === altArray.length - 1 ? (currentAlt = 0) : currentAlt++;
+    modalImgRef.alt = altArray[currentAlt];
   }
 });
 
 window.addEventListener('keyup', event => {
   if (event.key === 'ArrowLeft') {
-    modalImgRef.src =
-      imgArray[
-        currentImg === -1
-          ? (currentImg = currentImg + imgArray.length)
-          : currentImg--
-      ];
-    modalImgRef.alt =
-      altArray[
-        currentAlt === -1
-          ? (currentAlt = currentAlt + altArray.length)
-          : currentAlt--
-      ];
+    currentImg === 0 ? (currentImg = imgArray.length - 1) : currentImg--;
+    modalImgRef.src = imgArray[currentImg];
+    currentAlt === 0 ? (currentAlt = altArray.length - 1) : currentAlt--;
+    modalImgRef.alt = altArray[currentAlt];
   }
 });
-
