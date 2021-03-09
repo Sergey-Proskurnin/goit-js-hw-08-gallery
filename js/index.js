@@ -106,26 +106,25 @@ function addImgModal() {
   modalRef.classList.add('is-open');
   modalImgRef.src = event.target.dataset.source;
   modalImgRef.alt = event.target.alt;
+
+  window.addEventListener('keyup', event => {
+    if (event.key === 'ArrowRight') {
+      currentImg === imgArray.length - 1 ? (currentImg = 0) : currentImg++;
+      modalImgRef.src = imgArray[currentImg];
+      currentAlt === altArray.length - 1 ? (currentAlt = 0) : currentAlt++;
+      modalImgRef.alt = altArray[currentAlt];
+    }
+  });
+
+  window.addEventListener('keyup', event => {
+    if (event.key === 'ArrowLeft') {
+      currentImg === 0 ? (currentImg = imgArray.length - 1) : currentImg--;
+      modalImgRef.src = imgArray[currentImg];
+      currentAlt === 0 ? (currentAlt = altArray.length - 1) : currentAlt--;
+      modalImgRef.alt = altArray[currentAlt];
+    }
+  });
 }
-
-window.addEventListener('keyup', event => {
-  if (event.key === 'ArrowRight') {
-    currentImg === imgArray.length - 1 ? (currentImg = 0) : currentImg++;
-    modalImgRef.src = imgArray[currentImg];
-    currentAlt === altArray.length - 1 ? (currentAlt = 0) : currentAlt++;
-    modalImgRef.alt = altArray[currentAlt];
-  }
-});
-
-window.addEventListener('keyup', event => { 
-  if (event.key === 'ArrowLeft') {
-    currentImg === 0 ? (currentImg = imgArray.length - 1) : currentImg--;
-    modalImgRef.src = imgArray[currentImg];
-    currentAlt === 0 ? (currentAlt = altArray.length - 1) : currentAlt--;
-    modalImgRef.alt = altArray[currentAlt];
-  }
-});
-
 const lazyImages = document.querySelectorAll('img[loading="lazy"]');
 // lazyImages.forEach(image => {
 //   image.addEventListener('load', onImageLoaded, { once: true });
