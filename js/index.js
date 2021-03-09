@@ -53,6 +53,7 @@ const imadgesMarkup = images.reduce(
     rel="noreferrer noopener"
   >
     <img
+      loading="lazy"
       class="gallery__image"
       src="${preview}"
       data-source="${original}"
@@ -116,7 +117,7 @@ window.addEventListener('keyup', event => {
   }
 });
 
-window.addEventListener('keyup', event => {
+window.addEventListener('keyup', event => { 
   if (event.key === 'ArrowLeft') {
     currentImg === 0 ? (currentImg = imgArray.length - 1) : currentImg--;
     modalImgRef.src = imgArray[currentImg];
@@ -124,3 +125,8 @@ window.addEventListener('keyup', event => {
     modalImgRef.alt = altArray[currentAlt];
   }
 });
+
+const lazyImages = document.querySelectorAll('img[loading="lazy"]');
+// lazyImages.forEach(image => {
+//   image.addEventListener('load', onImageLoaded, { once: true });
+// });
