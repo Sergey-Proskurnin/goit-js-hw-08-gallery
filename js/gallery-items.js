@@ -64,10 +64,10 @@ export default [
   },
   {
     preview:
-    'https://cdn.pixabay.com/photo/2021/02/13/08/48/tit-6010819__340.jpg',
+    'https://cdn.pixabay.com/photo/2021/03/07/10/20/pond-6075837__340.jpg',
     original:
-    'https://pixabay.com/get/ge907b02c8a96d9a9486298d5be59b8d59edbd4adbb0e924ec906fb03b3a6bd38003791ae84128098cfe05bd1c1971a4d_1280.jpg',
-    description: 'Tit Songbird Small Bird',
+    'https://pixabay.com/get/g87cdf1ac3189e77659d91100937035c9f449fd5d9594c28dc8c5c1e845a7980f64cb017bb1d45a4efcafbb1ae0c159ee_1280.jpg',
+    description: 'Pond Field Mountains',
   },
   {
     preview:
@@ -220,7 +220,7 @@ export default [
     preview:
     'https://cdn.pixabay.com/photo/2021/01/27/13/47/cliff-5954980__340.jpg',
     original:
-    'https://pixabay.com/get/g1f956e505a0ddf564ea30b752b1c0ce7dcc49944af81fc971cee8b79bb65a3b1f758130e1c0304350fddfb16034492dc_1280.jpg',
+    'https://pixabay.com/get/gc081e30e93263474d6157a49b900c631d60a8288f2ae4c396bdaaab7167fb944fcd89caa8b0c44035c7e7942a2771259_1280.jpg',
     description: 'Cliff Coast Beach',
   },
   {
