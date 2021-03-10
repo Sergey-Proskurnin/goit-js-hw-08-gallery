@@ -42,7 +42,7 @@ const altArray = images.reduce((acc, { description }) => {
 }, []);
 
 const imadgesMarkup = images.reduce(
-  (acc, { preview, original, description }) => {
+  (acc, { preview, original, description }, index) => {
     return (
       acc +
       `<li class="gallery__item">
@@ -57,6 +57,7 @@ const imadgesMarkup = images.reduce(
       class="gallery__image"
       src="${preview}"
       data-source="${original}"
+      data-index="${index}"
       alt="${description}"
     />
   </a>
@@ -88,17 +89,15 @@ modalOverlay.addEventListener('click', event => {
   removeImgModal();
 });
 
-window.addEventListener('keyup', event => {
-  if (event.key === 'Escape') {
-    removeImgModal();
-  }
-});
-
 function removeImgModal() {
   bodyRef.classList.remove('is-open');
   modalRef.classList.remove('is-open');
   modalImgRef.src = '';
   modalImgRef.alt = '';
+
+  window.removeEventListener('keyup', listenerArrowRight);
+  window.removeEventListener('keyup', listenerArrowLeft);
+  window.removeEventListener('keyup', listenerEscape);
 }
 
 function addImgModal() {
@@ -107,23 +106,30 @@ function addImgModal() {
   modalImgRef.src = event.target.dataset.source;
   modalImgRef.alt = event.target.alt;
 
-  window.addEventListener('keyup', event => {
-    if (event.key === 'ArrowRight') {
-      currentImg === imgArray.length - 1 ? (currentImg = 0) : currentImg++;
-      modalImgRef.src = imgArray[currentImg];
-      currentAlt === altArray.length - 1 ? (currentAlt = 0) : currentAlt++;
-      modalImgRef.alt = altArray[currentAlt];
-    }
-  });
-
-  window.addEventListener('keyup', event => {
-    if (event.key === 'ArrowLeft') {
-      currentImg === 0 ? (currentImg = imgArray.length - 1) : currentImg--;
-      modalImgRef.src = imgArray[currentImg];
-      currentAlt === 0 ? (currentAlt = altArray.length - 1) : currentAlt--;
-      modalImgRef.alt = altArray[currentAlt];
-    }
-  });
+  window.addEventListener('keyup', listenerArrowRight);
+  window.addEventListener('keyup', listenerArrowLeft);
+  window.addEventListener('keyup', listenerEscape);
+}
+function listenerEscape(event) {
+  if (event.key === 'Escape') {
+    removeImgModal();
+  }
+}
+function listenerArrowRight(event) {
+  if (event.key === 'ArrowRight') {
+    currentImg === imgArray.length - 1 ? (currentImg = 0) : currentImg++;
+    modalImgRef.src = imgArray[currentImg];
+    currentAlt === altArray.length - 1 ? (currentAlt = 0) : currentAlt++;
+    modalImgRef.alt = altArray[currentAlt];
+  }
+}
+function listenerArrowLeft(event) {
+  if (event.key === 'ArrowLeft') {
+    currentImg === 0 ? (currentImg = imgArray.length - 1) : currentImg--;
+    modalImgRef.src = imgArray[currentImg];
+    currentAlt === 0 ? (currentAlt = altArray.length - 1) : currentAlt--;
+    modalImgRef.alt = altArray[currentAlt];
+  }
 }
 const lazyImages = document.querySelectorAll('img[loading="lazy"]');
 // lazyImages.forEach(image => {
