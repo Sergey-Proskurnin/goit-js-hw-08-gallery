@@ -54,8 +54,16 @@ body.is-open {
   width: 100%;
   object-fit: cover;
   transition: transform var(--animation-duration) var(--timing-function);
+
+  transform: translateY(-50%);
+  opacity: 0;
+  transition: all 1000ms linear 1000ms;
 }
 
+img.appear {
+  transform: translateY(0);
+  opacity: 1;
+}
 .gallery__link {
   display: block;
   text-decoration: none;
@@ -79,8 +87,7 @@ body.is-open {
   opacity: 0;
   pointer-events: none;
   transition: opacity var(--animation-duration) var(--timing-function);
-
-  }
+}
 
 .lightbox.is-open {
   opacity: 1;
