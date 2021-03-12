@@ -30,19 +30,13 @@ const closeModalBtn = document.querySelector('.lightbox__button');
 
 let currentImg = 0;
 let currentAlt = 0;
-
-const imgArray = images.reduce((acc, { original }) => {
-  acc.push(original);
-  return acc;
-}, []);
-
-const altArray = images.reduce((acc, { description }) => {
-  acc.push(description);
-  return acc;
-}, []);
+const imgArray = [];
+const altArray = [];
 
 const imadgesMarkup = images.reduce(
-  (acc, { preview, original, description }, index) => {
+  (acc, { preview, original, description }) => {
+    imgArray.push(original);
+    altArray.push(description);
     return (
       acc +
       `<li class="gallery__item">
@@ -57,7 +51,6 @@ const imadgesMarkup = images.reduce(
       class="gallery__image"
       src="${preview}"
       data-source="${original}"
-      data-index="${index}"
       alt="${description}"
     />
   </a>
@@ -73,8 +66,6 @@ imadgesListRef.addEventListener('click', event => {
   event.preventDefault();
   if (event.target.localName === 'img') {
     addImgModal();
-    currentImg = imgArray.indexOf(modalImgRef.src);
-    currentAlt = altArray.indexOf(modalImgRef.alt);
   }
 });
 
@@ -106,6 +97,9 @@ function addImgModal() {
   modalImgRef.src = event.target.dataset.source;
   modalImgRef.alt = event.target.alt;
 
+  currentImg = imgArray.indexOf(modalImgRef.src);
+  currentAlt = altArray.indexOf(modalImgRef.alt);
+
   window.addEventListener('keyup', listenerArrowRight);
   window.addEventListener('keyup', listenerArrowLeft);
   window.addEventListener('keyup', listenerEscape);
@@ -131,7 +125,24 @@ function listenerArrowLeft(event) {
     modalImgRef.alt = altArray[currentAlt];
   }
 }
+
+
+// if ('loading' in HTMLImageElement.prototype) {
+//   console.log('Браузер поддерживает lazyload');
+//   addSrcAttrToLazyImages();
+// } else {
+//   console.log('Браузер НЕ поддерживает lazyload');
+//   addLazySizesScript();
+// }
+
+
+
 const lazyImages = document.querySelectorAll('img[loading="lazy"]');
-// lazyImages.forEach(image => {
-//   image.addEventListener('load', onImageLoaded, { once: true });
-// });
+lazyImages.forEach(image => {
+  image.addEventListener('load', onImageLoaded, { once: true });
+});
+
+function onImageLoaded(evt) {
+  console.log('Картинка загрузилась');
+  evt.target.classList.add('appear');
+}
