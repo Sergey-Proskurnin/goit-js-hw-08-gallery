@@ -28,15 +28,10 @@ const modalOverlay = document.querySelector('.lightbox__overlay');
 const modalImgRef = document.querySelector('.lightbox__image');
 const closeModalBtn = document.querySelector('.lightbox__button');
 
-let currentImg = 0;
-let currentAlt = 0;
-const imgArray = [];
-const altArray = [];
+let currentIndex = 0;
 
 const imadgesMarkup = images.reduce(
   (acc, { preview, original, description }) => {
-    imgArray.push(original);
-    altArray.push(description);
     return (
       acc +
       `<li class="gallery__item">
@@ -48,8 +43,8 @@ const imadgesMarkup = images.reduce(
   >
     <img
       loading="lazy"
-      class="gallery__image"
-      src="${preview}"
+      class="gallery__image lazyload"
+      data-src="${preview}"
       data-source="${original}"
       alt="${description}"
     />
@@ -83,12 +78,9 @@ modalOverlay.addEventListener('click', event => {
 function removeImgModal() {
   bodyRef.classList.remove('is-open');
   modalRef.classList.remove('is-open');
-  modalImgRef.src = '';
-  modalImgRef.alt = '';
-
+  modalImgRef.removeAttribute('src');
+  modalImgRef.removeAttribute('alt');
   window.removeEventListener('keyup', listenerArrowRight);
-  window.removeEventListener('keyup', listenerArrowLeft);
-  window.removeEventListener('keyup', listenerEscape);
 }
 
 function addImgModal() {
@@ -97,52 +89,62 @@ function addImgModal() {
   modalImgRef.src = event.target.dataset.source;
   modalImgRef.alt = event.target.alt;
 
-  currentImg = imgArray.indexOf(modalImgRef.src);
-  currentAlt = altArray.indexOf(modalImgRef.alt);
+  images.forEach(el => {
+    if (el.original === modalImgRef.src) {
+      currentIndex = images.indexOf(el);
+    }
+  });
 
-  window.addEventListener('keyup', listenerArrowRight);
-  window.addEventListener('keyup', listenerArrowLeft);
-  window.addEventListener('keyup', listenerEscape);
+  window.addEventListener('keyup', listenerArrow);
 }
-function listenerEscape(event) {
+
+function listenerArrow(event) {
   if (event.key === 'Escape') {
     removeImgModal();
   }
-}
-function listenerArrowRight(event) {
   if (event.key === 'ArrowRight') {
-    currentImg === imgArray.length - 1 ? (currentImg = 0) : currentImg++;
-    modalImgRef.src = imgArray[currentImg];
-    currentAlt === altArray.length - 1 ? (currentAlt = 0) : currentAlt++;
-    modalImgRef.alt = altArray[currentAlt];
+    currentIndex === images.length - 1 ? (currentIndex = 0) : currentIndex++;
   }
-}
-function listenerArrowLeft(event) {
   if (event.key === 'ArrowLeft') {
-    currentImg === 0 ? (currentImg = imgArray.length - 1) : currentImg--;
-    modalImgRef.src = imgArray[currentImg];
-    currentAlt === 0 ? (currentAlt = altArray.length - 1) : currentAlt--;
-    modalImgRef.alt = altArray[currentAlt];
+    currentIndex === 0 ? (currentIndex = images.length - 1) : currentIndex--;
   }
+  modalImgRef.src = images[currentIndex].original;
+  modalImgRef.alt = images[currentIndex].description;
 }
 
+if ('loading' in HTMLImageElement.prototype) {
+  // console.log('Браузер поддерживает lazyload');
+  addSrcAttrToLazyImages();
+} else {
+  // console.log('Браузер НЕ поддерживает lazyload');
+  addLazySizesScript();
+}
 
-// if ('loading' in HTMLImageElement.prototype) {
-//   console.log('Браузер поддерживает lazyload');
-//   addSrcAttrToLazyImages();
-// } else {
-//   console.log('Браузер НЕ поддерживает lazyload');
-//   addLazySizesScript();
-// }
+const lazyImages = document.querySelectorAll('img[data-src]');
 
-
-
-const lazyImages = document.querySelectorAll('img[loading="lazy"]');
 lazyImages.forEach(image => {
   image.addEventListener('load', onImageLoaded, { once: true });
 });
 
 function onImageLoaded(evt) {
-  console.log('Картинка загрузилась');
+  // console.log('Картинка загрузилась');
   evt.target.classList.add('appear');
+}
+
+function addSrcAttrToLazyImages() {
+  const lazyImages = document.querySelectorAll('img[loading="lazy"]');
+
+  lazyImages.forEach(img => {
+    img.src = img.dataset.src;
+  });
+}
+function addLazySizesScript() {
+  const script = document.createElement('script');
+  script.src =
+    'https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.2.2/lazysizes.min.js';
+  script.integrity =
+    'sha512-TmDwFLhg3UA4ZG0Eb4MIyT1O1Mb+Oww5kFG0uHqXsdbyZz9DcvYQhKpGgNkamAI6h2lGGZq2X8ftOJvF/XjTUg==';
+  script.crossOrigin = 'anonymous';
+
+  document.body.appendChild(script);
 }
