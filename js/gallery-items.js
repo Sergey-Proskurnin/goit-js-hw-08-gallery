@@ -155,10 +155,10 @@ export default [
   },
   {
     preview:
-      'https://cdn.pixabay.com/photo/2021/03/02/22/08/rocks-6063906__340.png',
+      'https://cdn.pixabay.com/photo/2021/02/08/20/24/lake-5996427__340.jpg',
     original:
-      'https://cdn.pixabay.com/photo/2021/03/02/22/08/rocks-6063906_1280.png',
-    description: 'Rocks Walkway Pathway',
+      'https://cdn.pixabay.com/photo/2021/02/08/20/24/lake-5996427_1280.jpg',
+    description: 'milesz',
   },
   {
     preview:
@@ -169,10 +169,10 @@ export default [
   },
   {
     preview:
-      'https://cdn.pixabay.com/photo/2021/03/06/19/36/sea-6074538__340.jpg',
+      'https://cdn.pixabay.com/photo/2021/03/04/07/31/mountains-6067150__340.jpg',
     original:
-      'https://cdn.pixabay.com/photo/2021/03/06/19/36/sea-6074538_1280.jpg',
-    description: 'Sea Rocks Mountains',
+      'https://cdn.pixabay.com/photo/2021/03/04/07/31/mountains-6067150_1280.jpg',
+    description: 'Nic oBecker 59',
   },
   {
     preview:
